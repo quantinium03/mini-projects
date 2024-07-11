@@ -6,8 +6,8 @@ import (
 	"net/http"
 )
 
-func (c *Client) fetchLocation(pageURI *string) (locationResponse, error) {
-	url := baseURI + "/location_area"
+func (c Client) FetchLocation(pageURI *string) (locationResponse, error) {
+	url := baseURI + "/location-area"
 	if pageURI != nil {
 		url = *pageURI
 	}
