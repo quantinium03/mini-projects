@@ -1,5 +1,14 @@
 package main
 
+import (
+	"github.com/QuantiniumX/mini-projects/pokedex-in-go/packages/pokedexapi"
+	"time"
+)
+
 func main() {
-    startREPL();
+	pokeClient := pokedexapi.NewClient(5 * time.Second)
+	cfg := &config{
+		pokeapiClient: pokeClient,
+	}
+	startREPL(cfg)
 }

@@ -3,12 +3,19 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/QuantiniumX/mini-projects/pokedex-in-go/packages/pokedexapi"
 	"log"
 	"os"
 	"strings"
 )
 
-func startREPL() {
+type config struct {
+	pokeapiClient   pokedexapi.Client
+	nextLocationURI *string
+	prevLocationURI *string
+}
+
+func startREPL(cfg *config) {
 	reader := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Pokedex > ")
@@ -28,7 +35,7 @@ func startREPL() {
 			continue
 		}
 
-		err := command.callback()
+		err := command.callback(cfg)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -44,7 +51,7 @@ func cleanInput(text string) []string {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func(*config) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -52,12 +59,22 @@ func getCommands() map[string]cliCommand {
 		"help": {
 			name:        "help",
 			description: "Display a help message",
-			callback:    help_command,
+			callback:    helpCommand,
 		},
 		"exit": {
 			name:        "exit",
 			description: "Exits the program",
-			callback:    exit_command,
+			callback:    exitCommand,
+		},
+		"map": {
+			name:        "map",
+			description: "displays the name of next 20 location areas in the pokemon world",
+			callback:    mapfCommand,
+		},
+		"mapb": {
+			name:        "mapb",
+			description: "displays the name of previous 20 location in the pokemon world",
+			callback:    mapbCommand,
 		},
 	}
 }

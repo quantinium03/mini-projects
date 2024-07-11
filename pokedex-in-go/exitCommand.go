@@ -4,7 +4,7 @@ import (
 	"os"
 )
 
-func exit_command() error {
+func exitCommand(cfg* config) error {
 	os.Exit(1)
 	return nil
 }
