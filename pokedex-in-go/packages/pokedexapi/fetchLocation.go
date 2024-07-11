@@ -17,7 +17,7 @@ func (c *Client) fetchLocation(pageURI *string) (locationResponse, error) {
 		return locationResponse{}, err
 	}
 
-	resp, err := c.httpClient.Do(req)
+	resp, err := c.HttpClient.Do(req)
 	if err != nil {
 		return locationResponse{}, err
 	}
