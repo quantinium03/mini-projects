@@ -12,12 +12,22 @@ func (c Client) FetchLocation(pageURI *string) (locationResponse, error) {
 		url = *pageURI
 	}
 
+	if val, ok := c.cache.Get(url); ok {
+		location := locationResponse{}
+		err := json.Unmarshal(val, &location)
+		if err != nil {
+			return locationResponse{}, err
+		}
+		return location, nil
+
+	}
+
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return locationResponse{}, err
 	}
 
-	resp, err := c.HttpClient.Do(req)
+	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return locationResponse{}, err
 	}
@@ -33,6 +43,6 @@ func (c Client) FetchLocation(pageURI *string) (locationResponse, error) {
 	if err != nil {
 		return locationResponse{}, err
 	}
+	c.cache.Add(url, data)
 	return location, nil
-
 }

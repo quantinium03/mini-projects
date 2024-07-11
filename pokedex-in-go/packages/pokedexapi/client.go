@@ -1,17 +1,20 @@
 package pokedexapi
 
 import (
+	"github.com/QuantiniumX/mini-projects/pokedex-in-go/packages/pokecache"
 	"net/http"
 	"time"
 )
 
 type Client struct {
-	HttpClient http.Client
+	cache      pokecache.Cache
+	httpClient http.Client
 }
 
-func NewClient(timeout time.Duration) Client {
+func NewClient(timeout, cacheInterval time.Duration) Client {
 	return Client{
-		HttpClient: http.Client{
+		cache: pokecache.NewCache(cacheInterval),
+		httpClient: http.Client{
 			Timeout: timeout,
 		},
 	}
