@@ -10,9 +10,10 @@ import (
 )
 
 type config struct {
-	pokedexapiClient   pokedexapi.Client
-	nextLocationURI *string
-	prevLocationURI *string
+	pokedexapiClient pokedexapi.Client
+	nextLocationURI  *string
+	prevLocationURI  *string
+	caughtPokemon    map[string]pokedexapi.Pokemon
 }
 
 func startREPL(cfg *config) {
@@ -28,6 +29,10 @@ func startREPL(cfg *config) {
 		}
 
 		commandName := words[0]
+		args := []string{}
+		if len(words) > 1 {
+			args = words[1:]
+		}
 
 		command, exists := getCommands()[commandName]
 		if !exists {
@@ -35,7 +40,7 @@ func startREPL(cfg *config) {
 			continue
 		}
 
-		err := command.callback(cfg)
+		err := command.callback(cfg, args...)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -51,30 +56,50 @@ func cleanInput(text string) []string {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
+	callback    func(*config, ...string) error
 }
 
 func getCommands() map[string]cliCommand {
 	return map[string]cliCommand{
 		"help": {
 			name:        "help",
-			description: "Display a help message",
+			description: "Displays a help message",
 			callback:    helpCommand,
 		},
-		"exit": {
-			name:        "exit",
-			description: "Exits the program",
-			callback:    exitCommand,
+		"catch": {
+			name:        "catch <pokemon_name>",
+			description: "Attempt to catch a pokemon",
+			callback:    catchCommand,
+		},
+		"inspect": {
+			name:        "inspect <pokemon_name>",
+			description: "View details about a caught Pokemon",
+			callback:    inspectCommand,
+		},
+		"explore": {
+			name:        "explore <location_name>",
+			description: "Explore a location",
+			callback:    exploreCommand,
 		},
 		"map": {
 			name:        "map",
-			description: "displays the name of next 20 location areas in the pokemon world",
+			description: "Get the next page of locations",
 			callback:    mapfCommand,
 		},
 		"mapb": {
 			name:        "mapb",
-			description: "displays the name of previous 20 location in the pokemon world",
+			description: "Get the previous page of locations",
 			callback:    mapbCommand,
+		},
+		"pokedex": {
+			name:        "pokedex",
+			description: "See all the pokemon you've caught",
+			callback:    pokedexCommand,
+		},
+		"exit": {
+			name:        "exit",
+			description: "Exit the Pokedex",
+			callback:    exitCommand,
 		},
 	}
 }

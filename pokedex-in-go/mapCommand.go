@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func mapfCommand(cfg *config) error {
+func mapfCommand(cfg *config, args ...string) error {
 	locationResp, err := cfg.pokedexapiClient.FetchLocation(cfg.nextLocationURI)
 	if err != nil {
 		return err
@@ -20,7 +20,7 @@ func mapfCommand(cfg *config) error {
 	return nil
 }
 
-func mapbCommand(cfg *config) error {
+func mapbCommand(cfg *config, args ...string) error {
 	if cfg.prevLocationURI == nil {
 		return errors.New("You are on the first page")
 	}
