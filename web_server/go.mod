@@ -1,4 +1,4 @@
-module github.com/mini-projects/web_server
+module github.com/QuantiniumX/mini-projects/web_server
 
 go 1.22.5
 

@@ -2,7 +2,7 @@ package mysql
 
 import (
 	"database/sql"
-	"github.com/mini-projects/web_server/pkg/models"
+	"github.com/QuantiniumX/mini-projects/web_server/pkg/models"
 )
 
 type SnippetModel struct {

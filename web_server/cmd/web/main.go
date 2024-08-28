@@ -7,10 +7,8 @@ import (
 	"net/http"
 	"os"
 
-
-
-	"github.com/mini-projects/web_server/pkg/sql"
-	"github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/QuantiniumX/mini-projects/web_server/pkg/models/mysql"
 )
 
 type application struct {
@@ -30,7 +28,7 @@ func main() {
 	app := &application{
 		errorLog: errorLog,
 		infoLog:  infoLog,
-		snippets: &mysql.SnippetModel{DB:db},
+		snippets: &mysql.SnippetModel{DB: db},
 	}
 
 	db, err := openDB(*dsn)
