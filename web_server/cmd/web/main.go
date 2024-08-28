@@ -9,7 +9,7 @@ import (
 
 
 
-	"github.com/mini-project/web_server/pkg/sql"
+	"github.com/mini-projects/web_server/pkg/sql"
 	"github.com/go-sql-driver/mysql"
 )
 
